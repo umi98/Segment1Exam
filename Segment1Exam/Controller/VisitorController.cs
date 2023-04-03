@@ -62,7 +62,6 @@ internal class VisitorController
                 case "4":
                     Console.WriteLine("Edit visitor\n");
                     Console.Write("Id: ");
-                    // id pada tabel region adalah integer, perlu dicek jika tipe data yg dimasukkan benar
                     iid = int.TryParse(Console.ReadLine(), out id);
                     if (GetVisitorById(id))
                     {
@@ -86,7 +85,6 @@ internal class VisitorController
                     Console.Clear();
                     Console.WriteLine("Delete a visitor\n");
                     Console.Write("Id: ");
-                    // id pada tabel region adalah integer, perlu dicek jika tipe data yg dimasukkan benar
                     iid = int.TryParse(Console.ReadLine(), out id);
                     if (GetVisitorById(id))
                     {
@@ -171,7 +169,7 @@ internal class VisitorController
                 Console.WriteLine("Name: " + reader[1]);
                 Console.WriteLine("Phone: " + reader[2]);
                 Console.WriteLine("Address: " + reader[3]);
-                Console.WriteLine("Borrow ID: " + reader[4]);
+                Console.WriteLine("Borrower ID: " + reader[4]);
             }
         }
         else
@@ -228,7 +226,8 @@ internal class VisitorController
         {
             SqlCommand command = new SqlCommand();
             command.Connection = connection;
-            command.CommandText = "INSERT INTO visitor VALUES (@name, @phone, @address, @borrow_id)";
+            command.CommandText = "INSERT INTO visitor VALUES" +
+                " (@name, @phone, @address, @borrow_id)";
             command.Transaction = transaction;
 
             command.Parameters.Add("@name", SqlDbType.VarChar);
@@ -283,7 +282,10 @@ internal class VisitorController
         {
             SqlCommand command = new SqlCommand();
             command.Connection = connection;
-            command.CommandText = "UPDATE visitor SET name = @name, phone = @phone, address = @address, borrow_id = @borrow_id WHERE id = @id";
+            command.CommandText = "UPDATE visitor" +
+                " SET name = @name, phone = @phone, address = @address," +
+                " borrower_id = @borrow_id" +
+                " WHERE id = @id";
             command.Transaction = transaction;
 
             command.Parameters.Add("@id", SqlDbType.Int);

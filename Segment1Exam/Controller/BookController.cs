@@ -42,8 +42,8 @@ internal class BookController
                     Console.ReadKey();
                     break;
                 case "2":
-                    Console.WriteLine("Cari Book berdasar id\n");
-                    Console.Write("Id: ");
+                    Console.WriteLine("Get book by ID\n");
+                    Console.Write("ID: ");
                     iid = int.TryParse(Console.ReadLine(), out id);
                     BookById(id);
                     Console.ReadKey();
@@ -64,7 +64,7 @@ internal class BookController
                 case "4":
                     Console.WriteLine("Edit Book\n");
                     Console.Write("Id: ");
-                    // id pada tabel region adalah integer, perlu dicek jika tipe data yg dimasukkan benar
+                    
                     iid = int.TryParse(Console.ReadLine(), out id);
                     if (GetBookById(id))
                     {
@@ -87,8 +87,7 @@ internal class BookController
                 case "5":
                     Console.Clear();
                     Console.WriteLine("Delete a Book\n");
-                    Console.Write("Id: ");
-                    // id pada tabel region adalah integer, perlu dicek jika tipe data yg dimasukkan benar
+                    Console.Write("ID: ");
                     iid = int.TryParse(Console.ReadLine(), out id);
                     if (GetBookById(id))
                     {
@@ -125,11 +124,11 @@ internal class BookController
 
         if (reader.HasRows)
         {
-            Console.WriteLine("Daftar Book");
+            Console.WriteLine("List of Book");
             while (reader.Read())
             {
                 Console.WriteLine("---------------------");
-                Console.WriteLine("Id: " + reader[0]);
+                Console.WriteLine("ID: " + reader[0]);
                 Console.WriteLine("Title: " + reader[1]);
                 Console.WriteLine("Author: " + reader[2]);
                 Console.WriteLine("No. of actual copies: " + reader[3]);
@@ -166,7 +165,7 @@ internal class BookController
         // Tampilkan data jika ditemukan dan respon jika tidak ada data
         if (reader.HasRows)
         {
-            Console.WriteLine("Hasil");
+            Console.WriteLine("Result");
             while (reader.Read())
             {
                 Console.WriteLine("Id: " + reader[0]);
@@ -230,16 +229,17 @@ internal class BookController
         {
             SqlCommand command = new SqlCommand();
             command.Connection = connection;
-            command.CommandText = "INSERT INTO region VALUES (@title, @author, @no_act, @no_curr)";
+            command.CommandText = "INSERT INTO region VALUES" +
+                " (@title, @author, @no_act, @no_curr)";
             command.Transaction = transaction;
 
             command.Parameters.Add("@title", SqlDbType.VarChar);
             command.Parameters["@title"].Value = title;
             command.Parameters.Add("@author", SqlDbType.Bit);
             command.Parameters["@author"].Value = author;
-            command.Parameters.Add("@no_act", SqlDbType.VarChar);
+            command.Parameters.Add("@no_act", SqlDbType.Int);
             command.Parameters["@no_act"].Value = no_act;
-            command.Parameters.Add("@no_curr", SqlDbType.VarChar);
+            command.Parameters.Add("@no_curr", SqlDbType.Int);
             command.Parameters["@no_curr"].Value = no_curr;
 
             int result = command.ExecuteNonQuery();
@@ -285,7 +285,10 @@ internal class BookController
         {
             SqlCommand command = new SqlCommand();
             command.Connection = connection;
-            command.CommandText = "UPDATE Book SET title = @title, author = @author, no_of_copies_actual = @no_act, no_of_copies_current = @no_curr WHERE id = @id";
+            command.CommandText = "UPDATE Book" +
+                " SET title = @title, author = @author, no_of_copies_actual = @no_act," +
+                " no_of_copies_current = @no_curr" +
+                " WHERE id = @id";
             command.Transaction = transaction;
 
             command.Parameters.Add("@id", SqlDbType.Int);
@@ -294,9 +297,9 @@ internal class BookController
             command.Parameters["@title"].Value = title;
             command.Parameters.Add("@author", SqlDbType.Bit);
             command.Parameters["@author"].Value = author;
-            command.Parameters.Add("@no_act", SqlDbType.VarChar);
+            command.Parameters.Add("@no_act", SqlDbType.Int);
             command.Parameters["@no_act"].Value = no_act;
-            command.Parameters.Add("@no_curr", SqlDbType.VarChar);
+            command.Parameters.Add("@no_curr", SqlDbType.Int);
             command.Parameters["@no_curr"].Value = no_curr;
 
             int result = command.ExecuteNonQuery();

@@ -37,6 +37,7 @@ internal class Program
                     BookController.BookView();
                     break;
                 case "4":
+                    BorrowerController.BorrowerView();
                     break;
                 case "5":
                     endApp = true;

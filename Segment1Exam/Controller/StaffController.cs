@@ -41,8 +41,8 @@ internal class StaffController
                     Console.ReadKey();
                     break;
                 case "2":
-                    Console.WriteLine("Cari staff berdasar id\n");
-                    Console.Write("Id: ");
+                    Console.WriteLine("Get staff by ID\n");
+                    Console.Write("ID: ");
                     iid = int.TryParse(Console.ReadLine(), out id);
                     StaffById(id);
                     Console.ReadKey();
@@ -60,8 +60,7 @@ internal class StaffController
                     break;
                 case "4":
                     Console.WriteLine("Edit staff\n");
-                    Console.Write("Id: ");
-                    // id pada tabel region adalah integer, perlu dicek jika tipe data yg dimasukkan benar
+                    Console.Write("ID: ");
                     iid = int.TryParse(Console.ReadLine(), out id);
                     if (GetStaffById(id))
                     {
@@ -75,15 +74,14 @@ internal class StaffController
                     }
                     else
                     {
-                        Console.WriteLine("Id tidak tersedia, harap lihat kembali daftar");
+                        Console.WriteLine("ID not available, check the list.");
                     }
                     Console.ReadKey();
                     break;
                 case "5":
                     Console.Clear();
                     Console.WriteLine("Delete a staff\n");
-                    Console.Write("Id: ");
-                    // id pada tabel region adalah integer, perlu dicek jika tipe data yg dimasukkan benar
+                    Console.Write("ID: ");
                     iid = int.TryParse(Console.ReadLine(), out id);
                     if (GetStaffById(id))
                     {
@@ -91,7 +89,7 @@ internal class StaffController
                     }
                     else
                     {
-                        Console.WriteLine("Id tidak tersedia, harap lihat kembali daftar");
+                        Console.WriteLine("ID not available, check the list.");
                     }
                     Console.ReadKey();
                     break;
@@ -120,20 +118,20 @@ internal class StaffController
 
         if (reader.HasRows)
         {
-            Console.WriteLine("Daftar Staff");
+            Console.WriteLine("List of Staff");
             while (reader.Read())
             {
                 Console.WriteLine("---------------------");
                 Console.WriteLine("ID: " + reader[0]);
-                Console.WriteLine("Nama: " + reader[1]);
+                Console.WriteLine("Name: " + reader[1]);
                 Console.WriteLine("Administrator: " + reader[2]);
-                Console.WriteLine("Posisi: " + reader[3]);
+                Console.WriteLine("Role: " + reader[3]);
             }
             Console.WriteLine("---------------------");
         }
         else
         {
-            Console.WriteLine("Tidak ada data");
+            Console.WriteLine("No Data");
         }
         Console.ReadKey();
         reader.Close();
@@ -160,12 +158,13 @@ internal class StaffController
         // Tampilkan data jika ditemukan dan respon jika tidak ada data
         if (reader.HasRows)
         {
-            Console.WriteLine("Hasil");
+            Console.WriteLine("Result");
             while (reader.Read())
             {
-                Console.WriteLine("Id: " + reader[0]);
+                Console.WriteLine("ID: " + reader[0]);
                 Console.WriteLine("Name: " + reader[1]);
-                Console.WriteLine("Code: " + reader[2]);
+                Console.WriteLine("Admin stat: " + reader[2]);
+                Console.WriteLine("Role: " + reader[3]);
             }
         }
         else
@@ -222,7 +221,8 @@ internal class StaffController
         {
             SqlCommand command = new SqlCommand();
             command.Connection = connection;
-            command.CommandText = "INSERT INTO region VALUES (@name, @admin, @role)";
+            command.CommandText = "INSERT INTO region VALUES" +
+                " (@name, @admin, @role)";
             command.Transaction = transaction;
 
             command.Parameters.Add("@name", SqlDbType.VarChar);
@@ -237,11 +237,11 @@ internal class StaffController
 
             if (result > 0)
             {
-                Console.WriteLine("Data berhasil ditambah");
+                Console.WriteLine("Success to add data");
             }
             else
             {
-                Console.WriteLine("Data gagal ditambah");
+                Console.WriteLine("Failed!");
             }
 
             connection.Close();
@@ -275,7 +275,9 @@ internal class StaffController
         {
             SqlCommand command = new SqlCommand();
             command.Connection = connection;
-            command.CommandText = "UPDATE staff SET name = @name, admin = @admin, role = @role WHERE id = @id";
+            command.CommandText = "UPDATE staff" +
+                " SET name = @name, admin = @admin, role = @role" +
+                " WHERE id = @id";
             command.Transaction = transaction;
 
             command.Parameters.Add("@id", SqlDbType.Int);
@@ -292,11 +294,11 @@ internal class StaffController
 
             if (result > 0)
             {
-                Console.WriteLine("Data berhasil diubah");
+                Console.WriteLine("Data has edited");
             }
             else
             {
-                Console.WriteLine("Data gagal diubah, pastikan id berupa angka");
+                Console.WriteLine("Failed to edit data");
             }
 
             connection.Close();
@@ -338,11 +340,11 @@ internal class StaffController
 
             if (result > 0)
             {
-                Console.WriteLine("Data berhasil dihapus");
+                Console.WriteLine("Data deleted");
             }
             else
             {
-                Console.WriteLine("Data gagal dihapus, pastikan id berupa angka");
+                Console.WriteLine("Failed to delete data");
             }
 
             connection.Close();
