@@ -35,8 +35,31 @@ internal class BookController
         {
             Console.WriteLine("No Data");
         }
-        Console.ReadKey();
     }
+
+    public void BookList2()
+    {
+        List<BookModel> bookl = br.Select1();
+
+        if (bookl.Count > 0)
+        {
+            foreach (BookModel b in bookl)
+            {
+                Console.WriteLine("---------------------");
+                Console.WriteLine("ID: " + b.Id);
+                Console.WriteLine("Title: " + b.Title);
+                Console.WriteLine("Author: " + b.Author);
+                Console.WriteLine("No. of Actual Copy: " + b.No_Of_Copies_Actual);
+                Console.WriteLine("No. of Current Copy: " + b.No_Of_Copies_Current);
+            }
+            Console.WriteLine("---------------------");
+        }
+        else
+        {
+            Console.WriteLine("No Data");
+        }
+    }
+
 
     public void BookById(BookModel b)
     {
@@ -59,7 +82,6 @@ internal class BookController
         {
             Console.WriteLine("No Data");
         }
-        Console.ReadKey();
     }
 
     public bool CheckBook(BookModel b)
@@ -79,7 +101,6 @@ internal class BookController
         {
             Console.WriteLine("Data gagal ditambahkan");
         }
-        Console.ReadKey();
     }
 
     public void BookEdit(BookModel b)
@@ -93,7 +114,6 @@ internal class BookController
         {
             Console.WriteLine("Data gagal ditambahkan");
         }
-        Console.ReadKey();
     }
 
     public void BookDelete(BookModel b)
@@ -107,6 +127,5 @@ internal class BookController
         {
             Console.WriteLine("Data gagal ditambahkan");
         }
-        Console.ReadKey();
     }
 }

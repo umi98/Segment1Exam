@@ -32,7 +32,8 @@ internal class VisitorView
             switch (opsi)
             {
                 case "1":
-                    vc.VisitorList();
+                    Console.WriteLine("List of Visitor\n");
+                    vc.VisitorList2();
                     Console.ReadKey();
                     break;
                 case "2":

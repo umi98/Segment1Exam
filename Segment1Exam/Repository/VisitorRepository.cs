@@ -34,12 +34,43 @@ internal class VisitorRepository
         {
             Console.WriteLine(e.Message);
         }
-        finally
-        {
-            connection.Close();
-        }
+        connection.Close();
         return dt;
     }
+
+    public List<VisitorModel> Select2()
+    {
+        SqlConnection connection = new SqlConnection(ConnectionString);
+        List<VisitorModel> visitorl = new List<VisitorModel>();
+
+        SqlCommand command = new SqlCommand();
+        try
+        {
+            command.Connection = connection;
+            command.CommandText = "SELECT * FROM visitor";
+
+            connection.Open();
+            SqlDataAdapter adapter = new SqlDataAdapter(command);
+            SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                VisitorModel visitor = new VisitorModel();
+                visitor.Id = Convert.ToInt32(reader[0]);
+                visitor.Name = Convert.ToString(reader[1]);
+                visitor.Phone = Convert.ToString(reader[2]);
+                visitor.Address = Convert.ToString(reader[3]);
+                visitor.Borrower_Id = Convert.ToString(reader[4]);
+                visitorl.Add(visitor);
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
+        connection.Close();
+        return visitorl;
+    }
+
 
     // Get visitor by ID
     public DataTable SelectById(VisitorModel v)
@@ -65,10 +96,7 @@ internal class VisitorRepository
         {
             Console.WriteLine(e.Message);
         }
-        finally
-        {
-            connection.Close();
-        }
+        connection.Close();
         return dt;
     }
 
@@ -138,10 +166,7 @@ internal class VisitorRepository
                 Console.WriteLine(r.Message);
             }
         }
-        finally
-        {
-            connection.Close();
-        }
+        connection.Close();
         return result;
     }
 
@@ -169,7 +194,7 @@ internal class VisitorRepository
             command.Parameters["@id"].Value = v.Id;
             command.Parameters.Add("@name", SqlDbType.VarChar);
             command.Parameters["@name"].Value = v.Name;
-            command.Parameters.Add("@phone", SqlDbType.Bit);
+            command.Parameters.Add("@phone", SqlDbType.VarChar);
             command.Parameters["@phone"].Value = v.Phone;
             command.Parameters.Add("@address", SqlDbType.VarChar);
             command.Parameters["@address"].Value = v.Address;
@@ -200,10 +225,7 @@ internal class VisitorRepository
                 Console.WriteLine(r.Message);
             }
         }
-        finally
-        {
-            connection.Close();
-        }
+        connection.Close();
         return result;
     }
 
@@ -250,10 +272,7 @@ internal class VisitorRepository
                 Console.WriteLine(r.Message);
             }
         }
-        finally
-        {
-            connection.Close();
-        }
+        connection.Close();
         return result;
     }
 }

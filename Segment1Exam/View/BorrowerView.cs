@@ -23,9 +23,8 @@ internal class BorrowerView
             Console.WriteLine("1. Lihat semua");
             Console.WriteLine("2. New borrowing");
             Console.WriteLine("3. Return book");
-            Console.WriteLine("4. Edit");
-            Console.WriteLine("5. Hapus");
-            Console.WriteLine("6. Kembali ke menu utama");
+            Console.WriteLine("4. Hapus");
+            Console.WriteLine("5. Kembali ke menu utama");
             Console.Write("Pilih opsi: ");
             string opsi = Console.ReadLine();
 
@@ -43,22 +42,10 @@ internal class BorrowerView
                     bm.Book_id = Convert.ToInt32(Console.ReadLine());
 
                     Console.Write("Borrowed From: ");
-                    y = Convert.ToString(Console.Read());
-                    Console.Write("\tMonth: ");
-                    m = Convert.ToString(Console.Read());
-                    Console.Write("\tDay: ");
-                    d = Convert.ToString(Console.Read());
-                    bm.Borrowed_from = Convert.ToDateTime(y + m + d);
+                    bm.Borrowed_from = Convert.ToDateTime(Console.ReadLine());
 
                     Console.Write("Borrowed To: ");
-                    Console.Write("Year: ");
-                    y = Convert.ToString(Console.Read());
-                    Console.Write("\tMonth: ");
-                    m = Convert.ToString(Console.Read());
-                    Console.Write("\tDay: ");
-                    d = Convert.ToString(Console.Read());
-                    bm.Borrowed_to = Convert.ToDateTime(y + m + d);
-
+                    bm.Borrowed_to = Convert.ToDateTime(Console.ReadLine());
                     Console.Write("Issued By: ");
                     bm.Issued_by = Convert.ToInt32(Console.ReadLine());
                     bc.BorrowerNew(bm);
@@ -72,13 +59,7 @@ internal class BorrowerView
                     bm.Book_id = Convert.ToInt32(Console.ReadLine());
 
                     Console.Write("Borrowed From: ");
-                    Console.Write("Year: ");
-                    y = Convert.ToString(Console.Read());
-                    Console.Write("\tMonth: ");
-                    m = Convert.ToString(Console.Read());
-                    Console.Write("\tDay: ");
-                    d = Convert.ToString(Console.Read());
-                    bm.Borrowed_from = Convert.ToDateTime(y + m + d);
+                    bm.Borrowed_from = Convert.ToDateTime(Console.ReadLine());
 
                     if (bc.CheckBorrower(bm))
                     {
@@ -94,29 +75,8 @@ internal class BorrowerView
                     }
                     Console.ReadKey();
                     break;
+                
                 case "4":
-                    /*Console.WriteLine("Edit borrower\n");
-                    Console.Write("Id: ");
-                    iid = int.TryParse(Console.ReadLine(), out id);
-                    if (GetBorrowerById(id))
-                    {
-                        Console.Write("Name: ");
-                        name = Console.ReadLine();
-                        Console.Write("Phone: ");
-                        phone = Console.ReadLine();
-                        Console.Write("Address: ");
-                        address = Console.ReadLine();
-                        Console.Write("Borrow ID: ");
-                        borrow_id = Console.ReadLine();
-                        BorrowerEdit(id, name, phone, address, borrow_id);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Id tidak tersedia, harap lihat kembali daftar");
-                    }
-                    Console.ReadKey();*/
-                    break;
-                case "5":
                     Console.Clear();
                     Console.WriteLine("Delete borrower\n");
                     Console.Write("Borrower ID: ");
@@ -125,13 +85,7 @@ internal class BorrowerView
                     bm.Book_id = Convert.ToInt32(Console.ReadLine());
 
                     Console.Write("Borrowed From: ");
-                    Console.Write("Year: ");
-                    y = Convert.ToString(Console.Read());
-                    Console.Write("\tMonth: ");
-                    m = Convert.ToString(Console.Read());
-                    Console.Write("\tDay: ");
-                    d = Convert.ToString(Console.Read());
-                    bm.Borrowed_from = Convert.ToDateTime(y + m + d);
+                    bm.Borrowed_from = Convert.ToDateTime(Console.ReadLine());
 
                     if (bc.CheckBorrower(bm)) {
                         bc.BorrowerDelete(bm);
@@ -142,7 +96,7 @@ internal class BorrowerView
                     }
                     Console.ReadKey();
                     break;
-                case "6":
+                case "5":
                     endSection = true;
                     break;
                 default:
@@ -154,7 +108,7 @@ internal class BorrowerView
 
     public static void Views()
     {
-        VisitorView vv = new VisitorView();
-        vv.View();
+        BorrowerView bv = new BorrowerView();
+        bv.View();
     }
 }

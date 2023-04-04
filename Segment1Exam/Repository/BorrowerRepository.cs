@@ -33,10 +33,7 @@ internal class BorrowerRepository
         {
             Console.WriteLine(e.Message);
         }
-        finally
-        {
-            connection.Close();
-        }
+        connection.Close();
         return dt;
     }
 
@@ -69,10 +66,7 @@ internal class BorrowerRepository
         {
             Console.WriteLine(e.Message);
         }
-        finally
-        {
-            connection.Close();
-        }
+        connection.Close();
         return dt;
     }
 
@@ -106,7 +100,8 @@ internal class BorrowerRepository
         {
             SqlCommand command = new SqlCommand();
             command.Connection = connection;
-            command.CommandText = "INSERT INTO borrow VALUES" +
+            command.CommandText = "INSERT INTO borrow" +
+                " (borrower_id, book_id, borrowed_from, borrowed_to, issued_by) VALUES" +
                 " (@borr_id, @book_id, @borr_from, @borr_to, @staff_id)";
             command.Transaction = transaction;
 
@@ -149,10 +144,7 @@ internal class BorrowerRepository
                 Console.WriteLine(r.Message);
             }
         }
-        finally
-        {
-            connection.Close();
-        }
+        connection.Close();
         return result;
     }
 
@@ -213,10 +205,7 @@ internal class BorrowerRepository
                 Console.WriteLine(r.Message);
             }
         }
-        finally
-        {
-            connection.Close();
-        }
+        connection.Close();
         return result;
     }
 
@@ -268,10 +257,7 @@ internal class BorrowerRepository
                 Console.WriteLine(r.Message);
             }
         }
-        finally
-        {
-            connection.Close();
-        }
+        connection.Close();
         return result;
     }
 }

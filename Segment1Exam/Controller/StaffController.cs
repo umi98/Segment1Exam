@@ -26,7 +26,7 @@ internal class StaffController
                 Console.WriteLine("---------------------");
                 Console.WriteLine("ID: " + dt.Rows[i][0]);
                 Console.WriteLine("Name: " + dt.Rows[i][1]);
-                Console.WriteLine("Administrator: " + dt.Rows[i][2]);
+                Console.WriteLine("Is_administrator: " + dt.Rows[i][2]);
                 Console.WriteLine("Role: " + dt.Rows[i][3]);
             }
             Console.WriteLine("---------------------");
@@ -35,7 +35,29 @@ internal class StaffController
         {
             Console.WriteLine("No Data");
         }
-        Console.ReadKey();
+    }
+
+    public void StaffList2()
+    {
+        List<StaffModel> staffl = new List<StaffModel>();
+        staffl = sr.Select2();
+
+        if (staffl.Count > 0)
+        {
+            foreach (StaffModel bs in staffl)
+            {
+                Console.WriteLine("---------------------");
+                Console.WriteLine("ID: " + bs.Id);
+                Console.WriteLine("Name: " + bs.Name);
+                Console.WriteLine("Is_administrator: " + bs.Is_admin);
+                Console.WriteLine("Role: " + bs.Role);
+            }
+            Console.WriteLine("---------------------");
+        }
+        else
+        {
+            Console.WriteLine("No Data");
+        }
     }
 
     // Get staff by ID
@@ -50,7 +72,7 @@ internal class StaffController
                 Console.WriteLine("---------------------");
                 Console.WriteLine("ID: " + dt.Rows[i][0]);
                 Console.WriteLine("Name: " + dt.Rows[i][1]);
-                Console.WriteLine("Administrator: " + dt.Rows[i][2]);
+                Console.WriteLine("Is_administrator: " + dt.Rows[i][2]);
                 Console.WriteLine("Role: " + dt.Rows[i][3]);
             }
             Console.WriteLine("---------------------");
@@ -59,7 +81,6 @@ internal class StaffController
         {
             Console.WriteLine("No Data");
         }
-        Console.ReadKey();
     }
 
     // Check if staff exist
@@ -81,7 +102,6 @@ internal class StaffController
         {
             Console.WriteLine("Data gagal ditambahkan");
         }
-        Console.ReadKey();
     }
 
     // Edit existing staff
@@ -90,13 +110,12 @@ internal class StaffController
         bool result = sr.Edit(s);
         if (result)
         {
-            Console.WriteLine("Data berhasil ditambah");
+            Console.WriteLine("Data berhasil diubah");
         }
         else
         {
-            Console.WriteLine("Data gagal ditambahkan");
+            Console.WriteLine("Data gagal diubah");
         }
-        Console.ReadKey();
     }
 
     // Delete staff
@@ -105,13 +124,12 @@ internal class StaffController
         bool result = sr.Delete(s);
         if (result)
         {
-            Console.WriteLine("Data berhasil ditambah");
+            Console.WriteLine("Data berhasil dihapus");
         }
         else
         {
-            Console.WriteLine("Data gagal ditambahkan");
+            Console.WriteLine("Data gagal dihapus");
         }
-        Console.ReadKey();
     }
 
 }

@@ -32,13 +32,42 @@ internal class StaffRepository
         {
             Console.WriteLine(e.Message);
         }
-        finally
-        {
-            connection.Close();
-        }
-
+        connection.Close();
         return dt;
     }
+
+    public List<StaffModel> Select2()
+    {
+        SqlConnection connection = new SqlConnection(ConnectionString);
+        List<StaffModel> staffl = new List<StaffModel>();
+
+        SqlCommand command = new SqlCommand();
+        try
+        {
+            command.Connection = connection;
+            command.CommandText = "SELECT * FROM staff";
+
+            connection.Open();
+            SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                StaffModel staff = new StaffModel();
+                staff.Id = Convert.ToInt32(reader[0]);
+                staff.Name = Convert.ToString(reader[1]);
+                staff.Is_admin = Convert.ToInt32(reader[2]);
+                staff.Role = Convert.ToString(reader[3]);
+                staffl.Add(staff);
+            }
+            reader.Close();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
+        connection.Close();
+        return staffl;
+    }
+
 
     public DataTable SelectById(StaffModel s)
     {
@@ -62,11 +91,7 @@ internal class StaffRepository
         {
             Console.WriteLine(e.Message);
         }
-        finally
-        {
-            connection.Close();
-        }
-
+        connection.Close();
         return dt;
     }
 
@@ -97,14 +122,14 @@ internal class StaffRepository
         {
             SqlCommand command = new SqlCommand();
             command.Connection = connection;
-            command.CommandText = "INSERT INTO region VALUES" +
+            command.CommandText = "INSERT INTO staff VALUES" +
                 " (@name, @admin, @role)";
             command.Transaction = transaction;
 
             command.Parameters.Add("@name", SqlDbType.VarChar);
             command.Parameters["@name"].Value = s.Name;
             command.Parameters.Add("@admin", SqlDbType.Bit);
-            command.Parameters["@admin"].Value = s.Admin;
+            command.Parameters["@admin"].Value = s.Is_admin;
             command.Parameters.Add("@role", SqlDbType.VarChar);
             command.Parameters["@role"].Value = s.Role;
 
@@ -132,11 +157,7 @@ internal class StaffRepository
                 Console.WriteLine(r.Message);
             }
         }
-        finally
-        {
-            connection.Close();
-        }
-
+        connection.Close();
         return result;
     }
 
@@ -148,14 +169,12 @@ internal class StaffRepository
         connection.Open();
 
         SqlTransaction transaction = connection.BeginTransaction();
-        
+
         try
         {
             SqlCommand command = new SqlCommand();
             command.Connection = connection;
-            command.CommandText = "UPDATE staff" +
-                " SET name = @name, admin = @admin, role = @role" +
-                " WHERE id = @id";
+            command.CommandText = "UPDATE staff SET name = @name, is_admin = @admin, role = @role WHERE id = @id";
             command.Transaction = transaction;
 
             command.Parameters.Add("@id", SqlDbType.Int);
@@ -163,22 +182,22 @@ internal class StaffRepository
             command.Parameters.Add("@name", SqlDbType.VarChar);
             command.Parameters["@name"].Value = s.Name;
             command.Parameters.Add("@admin", SqlDbType.Bit);
-            command.Parameters["@admin"].Value = s.Admin;
+            command.Parameters["@admin"].Value = s.Is_admin;
             command.Parameters.Add("@role", SqlDbType.VarChar);
             command.Parameters["@role"].Value = s.Role;
 
-            int row = command.ExecuteNonQuery();
-            transaction.Commit(); // Titik data dipulihkan ketika rollback dilaksanakan.
+        int row = command.ExecuteNonQuery();
+        transaction.Commit(); // Titik data dipulihkan ketika rollback dilaksanakan.
 
-            if (row > 0)
-            {
-                result = true;
-            }
-            else
-            {
-                result = false;
-            }
+        if (row > 0)
+        {
+            result = true;
         }
+        else
+        {
+            result = false;
+        }
+    }
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
@@ -191,10 +210,7 @@ internal class StaffRepository
                 Console.WriteLine(r.Message);
             }
         }
-        finally
-        {
-            connection.Close();
-        }
+        connection.Close();
         return result;
     }
 
@@ -240,10 +256,7 @@ internal class StaffRepository
                 Console.WriteLine(r.Message);
             }
         }
-        finally
-        {
-            connection.Close();
-        }
+        connection.Close();
         return result;
     }
 }

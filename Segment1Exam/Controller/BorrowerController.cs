@@ -45,7 +45,6 @@ internal class BorrowerController
         {
             Console.WriteLine("Tidak ada data");
         }
-        Console.ReadKey();
     }
 
     // Get borrow by ID
@@ -79,7 +78,6 @@ internal class BorrowerController
         {
             Console.WriteLine("Tidak ada data");
         }
-        Console.ReadKey();
     }
 
     // Check if borrow exist
@@ -101,7 +99,6 @@ internal class BorrowerController
         {
             Console.WriteLine("Data gagal ditambahkan");
         }
-        Console.ReadKey();
     }
 
     // Edit existing borrow
@@ -116,7 +113,6 @@ internal class BorrowerController
         {
             Console.WriteLine("Data gagal diubah");
         }
-        Console.ReadKey();
     }
 
     // Delete borrow
@@ -131,6 +127,5 @@ internal class BorrowerController
         {
             Console.WriteLine("Data gagal dihapus");
         }
-        Console.ReadKey();
     }
 }

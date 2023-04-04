@@ -1,10 +1,6 @@
 ﻿using Segment1Exam.Controller;
 using Segment1Exam.Model;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Segment1Exam.View;
 
@@ -12,6 +8,7 @@ internal class BookView
 {
     BookModel bm = new BookModel();
     BookController bc = new BookController();
+
     // Ini bagian CRUD tabel book
 
     public void View()
@@ -25,15 +22,14 @@ internal class BookView
             Console.WriteLine("2. Lihat berdasar id");
             Console.WriteLine("3. Tambah");
             Console.WriteLine("4. Edit");
-            Console.WriteLine("5. Hapus");
-            Console.WriteLine("6. Kembali ke menu utama");
+            Console.WriteLine("5. Kembali ke menu utama");
             Console.Write("Pilih opsi: ");
             string opsi = Console.ReadLine();
 
             switch (opsi)
             {
                 case "1":
-                    bc.BookList();
+                    bc.BookList2();
                     Console.ReadKey();
                     break;
                 case "2":
@@ -79,7 +75,7 @@ internal class BookView
                     }
                     Console.ReadKey();
                     break;
-                case "5":
+                /*case "5":
                     Console.Clear();
                     Console.WriteLine("Delete a Book\n");
                     Console.Write("ID: ");
@@ -93,8 +89,8 @@ internal class BookView
                         Console.WriteLine("Id tidak tersedia, harap lihat kembali daftar");
                     }
                     Console.ReadKey();
-                    break;
-                case "6":
+                    break;*/
+                case "5":
                     endSection = true;
                     break;
                 default:

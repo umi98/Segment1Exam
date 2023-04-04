@@ -10,6 +10,6 @@ internal class StaffModel
 {
     public int Id { set; get; }
     public string Name { set; get; }
-    public int Admin { set; get; }
+    public int Is_admin { set; get; }
     public string Role { set; get; }
 }

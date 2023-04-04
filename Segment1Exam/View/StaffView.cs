@@ -33,7 +33,8 @@ internal class StaffView
             switch (opsi)
             {
                 case "1":
-                    sc.StaffList();
+                    Console.WriteLine("List of staff\n");
+                    sc.StaffList2();
                     Console.ReadKey();
                     break;
                 case "2":
@@ -48,8 +49,8 @@ internal class StaffView
                     Console.WriteLine("Add new Staff\n");
                     Console.Write("Name: ");
                     sm.Name = Console.ReadLine();
-                    Console.Write("Admin (1:Yes, 0:No): ");
-                    sm.Admin = Convert.ToInt32(Console.ReadLine());
+                    Console.Write("Is_admin (1:Yes, 0:No): ");
+                    sm.Is_admin = Convert.ToInt32(Console.ReadLine());
                     Console.Write("Role: ");
                     sm.Role = Console.ReadLine();
                     sc.StaffNew(sm);
@@ -63,8 +64,8 @@ internal class StaffView
                     {
                         Console.Write("Name: ");
                         sm.Name = Console.ReadLine();
-                        Console.Write("Admin (1:Yes, 0:No): ");
-                        sm.Id = Convert.ToInt32(Console.ReadLine());
+                        Console.Write("Is_admin (1:Yes, 0:No): ");
+                        sm.Is_admin = Convert.ToInt32(Console.ReadLine());
                         Console.Write("Role: ");
                         sm.Role = Console.ReadLine();
                         sc.StaffEdit(sm);

@@ -14,17 +14,19 @@ internal class BookRepository
 {
     static string ConnectionString = "Data Source=DESKTOP-IBME24N;Initial Catalog=db_library;Integrated Security=True;Connect Timeout=30;";
 
+
     // Get all Book
     public DataTable Select()
     {
         SqlConnection connection = new SqlConnection(ConnectionString);
         DataTable dt = new DataTable();
-
+        
         SqlCommand command = new SqlCommand();
         try
         {
             command.Connection = connection;
             command.CommandText = "SELECT * FROM book";
+            
             SqlDataAdapter adapter = new SqlDataAdapter(command);
 
             connection.Open();
@@ -34,11 +36,41 @@ internal class BookRepository
         {
             Console.WriteLine(e.Message);
         }
-        finally
-        {
-            connection.Close();
-        }
+        connection.Close();
         return dt;
+    }
+
+    public List<BookModel> Select1()
+    {
+        SqlConnection connection = new SqlConnection(ConnectionString);
+        List<BookModel> bookl = new List<BookModel>();
+
+        SqlCommand command = new SqlCommand();
+        try
+        {
+            command.Connection = connection;
+            command.CommandText = "SELECT * FROM book";
+
+            connection.Open();
+            SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                BookModel book = new BookModel();
+                book.Id = Convert.ToInt32(reader[0]);
+                book.Title = Convert.ToString(reader[1]);
+                book.Author = Convert.ToString(reader[2]);
+                book.No_Of_Copies_Actual = Convert.ToInt32(reader[3]);
+                book.No_Of_Copies_Current = Convert.ToInt32(reader[4]);
+                bookl.Add(book);
+            }
+            reader.Close();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
+        connection.Close();
+        return bookl;
     }
 
     // Get Book by ID
@@ -57,8 +89,6 @@ internal class BookRepository
             command.Parameters.Add("@id", SqlDbType.Int);
             command.Parameters["@id"].Value = b.Id;
 
-            connection.Open();
-
             SqlDataAdapter adapter = new SqlDataAdapter(command);
 
             connection.Open();
@@ -68,10 +98,7 @@ internal class BookRepository
         {
             Console.WriteLine(e.Message);
         }
-        finally
-        {
-            connection.Close();
-        }
+        connection.Close();
         return dt;
     }
 
@@ -102,13 +129,13 @@ internal class BookRepository
         {
             SqlCommand command = new SqlCommand();
             command.Connection = connection;
-            command.CommandText = "INSERT INTO region VALUES" +
+            command.CommandText = "INSERT INTO book VALUES" +
                 " (@title, @author, @no_act, @no_curr)";
             command.Transaction = transaction;
 
             command.Parameters.Add("@title", SqlDbType.VarChar);
             command.Parameters["@title"].Value = b.Title;
-            command.Parameters.Add("@author", SqlDbType.Bit);
+            command.Parameters.Add("@author", SqlDbType.VarChar);
             command.Parameters["@author"].Value = b.Author;
             command.Parameters.Add("@no_act", SqlDbType.Int);
             command.Parameters["@no_act"].Value = b.No_Of_Copies_Actual;
@@ -139,10 +166,7 @@ internal class BookRepository
                 Console.WriteLine(r.Message);
             }
         }
-        finally
-        {
-            connection.Close();
-        }
+        connection.Close();
         return result;
     }
 
@@ -208,7 +232,7 @@ internal class BookRepository
             command.Parameters["@id"].Value = b.Id;
             command.Parameters.Add("@title", SqlDbType.VarChar);
             command.Parameters["@title"].Value = b.Title;
-            command.Parameters.Add("@author", SqlDbType.Bit);
+            command.Parameters.Add("@author", SqlDbType.VarChar);
             command.Parameters["@author"].Value = b.Author;
             command.Parameters.Add("@no_act", SqlDbType.Int);
             command.Parameters["@no_act"].Value = b.No_Of_Copies_Actual;
@@ -239,10 +263,7 @@ internal class BookRepository
                 Console.WriteLine(r.Message);
             }
         }
-        finally
-        {
-            connection.Close();
-        }
+        connection.Close();
         return result;
     }
 
@@ -288,10 +309,7 @@ internal class BookRepository
                 Console.WriteLine(r.Message);
             }
         }
-        finally
-        {
-            connection.Close();
-        }
+        connection.Close();
         return result;
     }
 }

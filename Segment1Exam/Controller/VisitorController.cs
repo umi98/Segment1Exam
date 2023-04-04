@@ -37,8 +37,33 @@ internal class VisitorController
         {
             Console.WriteLine("Tidak ada data");
         }
+    }
+
+    public void VisitorList2()
+    {
+        List<VisitorModel> visitorl = new List<VisitorModel>();
+        visitorl = vr.Select2();
+
+        if (visitorl.Count > 0)
+        {
+            foreach (VisitorModel v in visitorl)
+            {
+                Console.WriteLine("---------------------");
+                Console.WriteLine("Id: " + v.Id);
+                Console.WriteLine("Name: " + v.Name);
+                Console.WriteLine("Phone: " + v.Phone);
+                Console.WriteLine("Address: " + v.Address);
+                Console.WriteLine("Borrow ID: " + v.Borrower_Id);
+            }
+            Console.WriteLine("---------------------");
+        }
+        else
+        {
+            Console.WriteLine("Tidak ada data");
+        }
         Console.ReadKey();
     }
+
 
     // Get visitor by ID
     public void VisitorById(VisitorModel v)
@@ -61,8 +86,7 @@ internal class VisitorController
         else
         {
             Console.WriteLine("Tidak ada data");
-        }
-        Console.ReadKey();        
+        }        
     }
 
     // Check if visitor exist
@@ -84,7 +108,6 @@ internal class VisitorController
         {
             Console.WriteLine("Data gagal ditambahkan");
         }
-        Console.ReadKey();
     }
 
     // Edit existing visitor
@@ -99,7 +122,6 @@ internal class VisitorController
         {
             Console.WriteLine("Data gagal ditambahkan");
         }
-        Console.ReadKey();
     }
 
     // Delete visitor
@@ -114,7 +136,6 @@ internal class VisitorController
         {
             Console.WriteLine("Data gagal ditambahkan");
         }
-        Console.ReadKey();
     }
 
 }
