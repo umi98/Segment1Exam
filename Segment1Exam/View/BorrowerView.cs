@@ -2,6 +2,7 @@
 using Segment1Exam.Model;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,8 +16,12 @@ internal class BorrowerView
     public void View()
     {
         bool endSection = false;
-        string y, m, d;
+        string y, m, d, date, format;
+        DateTime inputtedDate;
+        CultureInfo provider = CultureInfo.InvariantCulture;
         Console.Clear();
+
+        format = "yyyy-MM-dd";
         while (!endSection)
         {
             Console.WriteLine("Bagian tabel Borrower");
@@ -41,11 +46,25 @@ internal class BorrowerView
                     Console.Write("Book ID: ");
                     bm.Book_id = Convert.ToInt32(Console.ReadLine());
 
-                    Console.Write("Borrowed From: ");
-                    bm.Borrowed_from = Convert.ToDateTime(Console.ReadLine());
+                    Console.WriteLine("Borrowed From: ");
+                    Console.Write("Enter a year: ");
+                    y = Console.ReadLine();
+                    Console.Write("Enter a month: ");
+                    m = Console.ReadLine();
+                    Console.Write("Enter a day: ");
+                    d = Console.ReadLine();
+                    date = y + "-" + m + "-" + d;
+                    bm.Borrowed_from = Convert.ToDateTime(date);
 
-                    Console.Write("Borrowed To: ");
-                    bm.Borrowed_to = Convert.ToDateTime(Console.ReadLine());
+                    Console.WriteLine("Borrowed To: ");
+                    Console.Write("Enter a year: ");
+                    y = Console.ReadLine();
+                    Console.Write("Enter a month: ");
+                    m = Console.ReadLine();
+                    Console.Write("Enter a day: ");
+                    d = Console.ReadLine();
+                    date = y + "-" + m + "-" + d;
+                    bm.Borrowed_to = Convert.ToDateTime(date);
                     Console.Write("Issued By: ");
                     bm.Issued_by = Convert.ToInt32(Console.ReadLine());
                     bc.BorrowerNew(bm);
@@ -58,13 +77,27 @@ internal class BorrowerView
                     Console.Write("Book ID: ");
                     bm.Book_id = Convert.ToInt32(Console.ReadLine());
 
-                    Console.Write("Borrowed From: ");
-                    bm.Borrowed_from = Convert.ToDateTime(Console.ReadLine());
+                    Console.WriteLine("Borrowed From: ");
+                    Console.Write("Enter a year: ");
+                    y = Console.ReadLine();
+                    Console.Write("Enter a month: ");
+                    m = Console.ReadLine();
+                    Console.Write("Enter a day: ");
+                    d = Console.ReadLine();
+                    date = y + "-" + m + "-" + d;
+                    bm.Borrowed_from = Convert.ToDateTime(date);
 
                     if (bc.CheckBorrower(bm))
                     {
-                        Console.Write("Return Date: ");
-                        bm.Return_date = Convert.ToDateTime(Console.ReadLine());
+                        Console.WriteLine("Return Date: ");
+                        Console.Write("Enter a year: ");
+                        y = Console.ReadLine();
+                        Console.Write("Enter a month: ");
+                        m = Console.ReadLine();
+                        Console.Write("Enter a day: ");
+                        d = Console.ReadLine();
+                        date = y + "-" + m + "-" + d;
+                        bm.Return_date = Convert.ToDateTime(date);
                         Console.Write("Fine: ");
                         bm.Fine = Convert.ToInt32(Console.ReadLine());
                         bc.BorrowerReturn(bm);
@@ -84,8 +117,15 @@ internal class BorrowerView
                     Console.Write("Book ID: ");
                     bm.Book_id = Convert.ToInt32(Console.ReadLine());
 
-                    Console.Write("Borrowed From: ");
-                    bm.Borrowed_from = Convert.ToDateTime(Console.ReadLine());
+                    Console.WriteLine("Borrowed From: ");
+                    Console.Write("Enter a year: ");
+                    y = Console.ReadLine();
+                    Console.Write("Enter a month: ");
+                    m = Console.ReadLine();
+                    Console.Write("Enter a day: ");
+                    d = Console.ReadLine();
+                    date = y + "-" + m + "-" + d;
+                    bm.Borrowed_from = Convert.ToDateTime(date);
 
                     if (bc.CheckBorrower(bm)) {
                         bc.BorrowerDelete(bm);

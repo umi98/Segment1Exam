@@ -48,7 +48,7 @@ internal class BorrowerRepository
         {
             command.Connection = connection;
             command.CommandText = "SELECT * FROM borrow" +
-                " WHERE borrowed_to = @borr_id AND book_id = @book_id AND borrowed_from = @borr_from";
+                " WHERE borrower_id = @borr_id AND book_id = @book_id AND borrowed_from = @borr_from";
             // Tambah parameter
             command.Parameters.Add("@borr_id", SqlDbType.VarChar);
             command.Parameters["@borr_id"].Value = bm.Borrower_id;
@@ -75,7 +75,7 @@ internal class BorrowerRepository
     public bool CheckBorrower(BorrowerModel bm)
     {
         bool result = false;
-        if (SelectById(bm).Columns.Count > 0)
+        if (SelectById(bm).Rows.Count > 0)
         {
             result = true;
         }
@@ -163,7 +163,7 @@ internal class BorrowerRepository
             SqlCommand command = new SqlCommand();
             command.Connection = connection;
             command.CommandText = "UPDATE borrow SET return_date = @return_date, fine = @fine" +
-                " WHERE borrowed_to = @borr_id AND book_id = @book_id AND borrowed_from = @borr_from";
+                " WHERE borrower_id = @borr_id AND book_id = @book_id AND borrowed_from = @borr_from";
             command.Transaction = transaction;
 
             command.Parameters.Add("@borr_id", SqlDbType.VarChar);
@@ -223,14 +223,14 @@ internal class BorrowerRepository
             SqlCommand command = new SqlCommand();
             command.Connection = connection;
             command.CommandText = "DELETE FROM borrow" +
-                " WHERE borrowed_to = @borr_id AND book_id = @book_id AND borrowed_from = @borr_from";
+                " WHERE borrower_id = @borr_id AND book_id = @book_id AND borrowed_from = @borr_from";
             command.Transaction = transaction;
 
             command.Parameters.Add("@borr_id", SqlDbType.VarChar);
             command.Parameters["@borr_id"].Value = bm.Borrower_id;
             command.Parameters.Add("@book_id", SqlDbType.Int);
             command.Parameters["@book_id"].Value = bm.Book_id;
-            command.Parameters.Add("@borr_from", SqlDbType.Date);
+            command.Parameters.Add("@borr_from", SqlDbType.DateTime);
             command.Parameters["@borr_from"].Value = bm.Borrowed_from;
 
             int row = command.ExecuteNonQuery();
