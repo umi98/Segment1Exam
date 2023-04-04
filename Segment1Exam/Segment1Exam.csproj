@@ -9,8 +9,6 @@
 
   <ItemGroup>
     <Folder Include="Interface\" />
-    <Folder Include="Repository\" />
-    <Folder Include="View\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,4 +1,5 @@
 ﻿using Segment1Exam.Controller;
+using Segment1Exam.View;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -28,16 +29,16 @@ internal class Program
             switch (opsi)
             {
                 case "1":
-                    StaffController.StaffView();
+                    StaffView.Views();
                     break;
                 case "2":
-                    VisitorController.VisitorView();
+                    VisitorView.Views();
                     break;
                 case "3":
-                    BookController.BookView();
+                    BookView.Views();
                     break;
                 case "4":
-                    BorrowerController.BorrowerView();
+                    BorrowerView.Views();
                     break;
                 case "5":
                     endApp = true;

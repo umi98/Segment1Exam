@@ -6,126 +6,28 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Segment1Exam.Repository;
 
 namespace Segment1Exam.Controller;
 
 internal class StaffController
 {
-    static string ConnectionString = "Data Source=DESKTOP-IBME24N;Initial Catalog=db_library;Integrated Security=True;Connect Timeout=30;";
-    static SqlConnection connection;
-
-    // Ini bagian CRUD tabel staff
-    public static void StaffView()
-    {
-        bool endSection = false;
-        int id;
-        bool iid, admin;
-        string name, role;
-        Console.Clear();
-        while (!endSection)
-        {
-            Console.WriteLine("Bagian tabel staff");
-            Console.WriteLine("1. Lihat semua");
-            Console.WriteLine("2. Lihat berdasar id");
-            Console.WriteLine("3. Tambah");
-            Console.WriteLine("4. Edit");
-            Console.WriteLine("5. Hapus");
-            Console.WriteLine("6. Kembali ke menu utama");
-            Console.Write("Pilih opsi: ");
-            string opsi = Console.ReadLine();
-
-            switch (opsi)
-            {
-                case "1":
-                    StaffList();
-                    Console.ReadKey();
-                    break;
-                case "2":
-                    Console.WriteLine("Get staff by ID\n");
-                    Console.Write("ID: ");
-                    iid = int.TryParse(Console.ReadLine(), out id);
-                    StaffById(id);
-                    Console.ReadKey();
-                    break;
-                case "3":
-                    Console.WriteLine("Add new Staff\n");
-                    Console.Write("Name: ");
-                    name = Console.ReadLine();
-                    Console.Write("Admin (1:Yes, 0:No): ");
-                    admin = Convert.ToBoolean(Console.ReadLine());
-                    Console.Write("Role: ");
-                    role = Console.ReadLine();
-                    StaffNew(name, admin, role);
-                    Console.ReadKey();
-                    break;
-                case "4":
-                    Console.WriteLine("Edit staff\n");
-                    Console.Write("ID: ");
-                    iid = int.TryParse(Console.ReadLine(), out id);
-                    if (GetStaffById(id))
-                    {
-                        Console.Write("Name: ");
-                        name = Console.ReadLine();
-                        Console.Write("Admin (1:Yes, 0:No): ");
-                        admin = Convert.ToBoolean(Console.ReadLine());
-                        Console.Write("Role: ");
-                        role = Console.ReadLine();
-                        StaffEdit(id, name, admin, role);
-                    }
-                    else
-                    {
-                        Console.WriteLine("ID not available, check the list.");
-                    }
-                    Console.ReadKey();
-                    break;
-                case "5":
-                    Console.Clear();
-                    Console.WriteLine("Delete a staff\n");
-                    Console.Write("ID: ");
-                    iid = int.TryParse(Console.ReadLine(), out id);
-                    if (GetStaffById(id))
-                    {
-                        StaffDelete(id);
-                    }
-                    else
-                    {
-                        Console.WriteLine("ID not available, check the list.");
-                    }
-                    Console.ReadKey();
-                    break;
-                case "6":
-                    endSection = true;
-                    break;
-                default:
-                    break;
-            }
-            Console.Clear();
-        }
-    }
+    StaffRepository sr = new StaffRepository();
 
     // Get all staff
-    public static void StaffList()
+    public void StaffList()
     {
-        connection = new SqlConnection(ConnectionString);
+        DataTable dt = sr.Select();
 
-        SqlCommand command = new SqlCommand();
-        command.Connection = connection;
-        command.CommandText = "SELECT * FROM staff";
-
-        connection.Open();
-
-        SqlDataReader reader = command.ExecuteReader();
-
-        if (reader.HasRows)
+        if (dt.Rows.Count > 0)
         {
-            Console.WriteLine("List of Staff");
-            while (reader.Read())
+            for (int i = 0; i < dt.Rows.Count; i++)
             {
                 Console.WriteLine("---------------------");
-                Console.WriteLine("ID: " + reader[0]);
-                Console.WriteLine("Name: " + reader[1]);
-                Console.WriteLine("Administrator: " + reader[2]);
-                Console.WriteLine("Role: " + reader[3]);
+                Console.WriteLine("ID: " + dt.Rows[i][0]);
+                Console.WriteLine("Name: " + dt.Rows[i][1]);
+                Console.WriteLine("Administrator: " + dt.Rows[i][2]);
+                Console.WriteLine("Role: " + dt.Rows[i][3]);
             }
             Console.WriteLine("---------------------");
         }
@@ -134,233 +36,82 @@ internal class StaffController
             Console.WriteLine("No Data");
         }
         Console.ReadKey();
-        reader.Close();
-        connection.Close();
     }
 
     // Get staff by ID
-    public static void StaffById(int id)
+    public void StaffById(StaffModel s)
     {
-        connection = new SqlConnection(ConnectionString);
+        DataTable dt = sr.SelectById(s);
 
-        // Melakukan SQL query untuk mencari id
-        SqlCommand command = new SqlCommand();
-        command.Connection = connection;
-        command.CommandText = "SELECT * FROM staff where id = @id";
-        // Tambah parameter
-        command.Parameters.Add("@id", SqlDbType.Int);
-        command.Parameters["@id"].Value = id;
-
-        connection.Open();
-
-        SqlDataReader reader = command.ExecuteReader();
-
-        // Tampilkan data jika ditemukan dan respon jika tidak ada data
-        if (reader.HasRows)
+        if (dt.Rows.Count > 0)
         {
-            Console.WriteLine("Result");
-            while (reader.Read())
+            for (int i = 0; i < dt.Rows.Count; i++)
             {
-                Console.WriteLine("ID: " + reader[0]);
-                Console.WriteLine("Name: " + reader[1]);
-                Console.WriteLine("Admin stat: " + reader[2]);
-                Console.WriteLine("Role: " + reader[3]);
+                Console.WriteLine("---------------------");
+                Console.WriteLine("ID: " + dt.Rows[i][0]);
+                Console.WriteLine("Name: " + dt.Rows[i][1]);
+                Console.WriteLine("Administrator: " + dt.Rows[i][2]);
+                Console.WriteLine("Role: " + dt.Rows[i][3]);
             }
+            Console.WriteLine("---------------------");
         }
         else
         {
-            Console.WriteLine("Data not found!");
+            Console.WriteLine("No Data");
         }
         Console.ReadKey();
-        reader.Close();
-        connection.Close();
     }
 
     // Check if staff exist
-    public static bool GetStaffById(int id)
+    public bool CheckStaff(StaffModel s)
     {
-        connection = new SqlConnection(ConnectionString);
-
-        // Query untuk mencari berdasarkan id
-        SqlCommand command = new SqlCommand();
-        command.Connection = connection;
-        command.CommandText = "SELECT * FROM staff where id = @id";
-        command.Parameters.Add("@id", SqlDbType.Int);
-        command.Parameters["@id"].Value = id;
-
-        connection.Open();
-
-        SqlDataReader reader = command.ExecuteReader();
-
-        // Jika ditemukan kembalikan nilai true, jika tidak kembalikan nilai false
-        if (reader.HasRows)
-        {
-            reader.Close();
-            connection.Close();
-            return true;
-        }
-        else
-        {
-            reader.Close();
-            connection.Close();
-            return false;
-        }
+        bool result = sr.CheckStaff(s);
+        return result;
     }
 
     // Add new staff
-    public static void StaffNew(string name, bool admin, string role)
+    public void StaffNew(StaffModel s)
     {
-        connection = new SqlConnection(ConnectionString);
-
-        connection.Open();
-
-        // Melakukan penerapan rollback jika terjadi kesalahan
-        SqlTransaction transaction = connection.BeginTransaction(); // open connection before use this
-
-        try
+        bool result = sr.Insert(s);
+        if (result)
         {
-            SqlCommand command = new SqlCommand();
-            command.Connection = connection;
-            command.CommandText = "INSERT INTO region VALUES" +
-                " (@name, @admin, @role)";
-            command.Transaction = transaction;
-
-            command.Parameters.Add("@name", SqlDbType.VarChar);
-            command.Parameters["@name"].Value = name;
-            command.Parameters.Add("@admin", SqlDbType.Bit);
-            command.Parameters["@admin"].Value = admin;
-            command.Parameters.Add("@role", SqlDbType.VarChar);
-            command.Parameters["@role"].Value = role;
-
-            int result = command.ExecuteNonQuery();
-            transaction.Commit(); // Titik data dipulihkan ketika rollback dilaksanakan.
-
-            if (result > 0)
-            {
-                Console.WriteLine("Success to add data");
-            }
-            else
-            {
-                Console.WriteLine("Failed!");
-            }
-
-            connection.Close();
+            Console.WriteLine("Data berhasil ditambah");
         }
-        catch (Exception e)
+        else
         {
-            Console.WriteLine(e.Message);
-            try
-            {
-                transaction.Rollback();
-            }
-            catch (Exception r)
-            {
-                Console.WriteLine(r.Message);
-            }
+            Console.WriteLine("Data gagal ditambahkan");
         }
         Console.ReadKey();
     }
 
     // Edit existing staff
-    public static void StaffEdit(int id, string name, bool admin, string role)
+    public void StaffEdit(StaffModel s)
     {
-        connection = new SqlConnection(ConnectionString);
-
-        connection.Open();
-
-        // Menerapkan operasi untuk rollback jika terjadi kesalahan
-        SqlTransaction transaction = connection.BeginTransaction(); // open connection before use this
-
-        try
+        bool result = sr.Edit(s);
+        if (result)
         {
-            SqlCommand command = new SqlCommand();
-            command.Connection = connection;
-            command.CommandText = "UPDATE staff" +
-                " SET name = @name, admin = @admin, role = @role" +
-                " WHERE id = @id";
-            command.Transaction = transaction;
-
-            command.Parameters.Add("@id", SqlDbType.Int);
-            command.Parameters["@id"].Value = id;
-            command.Parameters.Add("@name", SqlDbType.VarChar);
-            command.Parameters["@name"].Value = name;
-            command.Parameters.Add("@admin", SqlDbType.Bit);
-            command.Parameters["@admin"].Value = admin;
-            command.Parameters.Add("@role", SqlDbType.VarChar);
-            command.Parameters["@role"].Value = role;
-
-            int result = command.ExecuteNonQuery();
-            transaction.Commit(); // Titik data dipulihkan ketika rollback dilaksanakan.
-
-            if (result > 0)
-            {
-                Console.WriteLine("Data has edited");
-            }
-            else
-            {
-                Console.WriteLine("Failed to edit data");
-            }
-
-            connection.Close();
+            Console.WriteLine("Data berhasil ditambah");
         }
-        catch (Exception e)
+        else
         {
-            Console.WriteLine(e.Message);
-            try
-            {
-                transaction.Rollback();
-            }
-            catch (Exception r)
-            {
-                Console.WriteLine(r.Message);
-            }
+            Console.WriteLine("Data gagal ditambahkan");
         }
+        Console.ReadKey();
     }
 
     // Delete staff
-    public static void StaffDelete(int id)
+    public void StaffDelete(StaffModel s)
     {
-        connection = new SqlConnection(ConnectionString);
-        connection.Open();
-
-        SqlTransaction transaction = connection.BeginTransaction(); // open connection before use this
-
-        try
+        bool result = sr.Delete(s);
+        if (result)
         {
-            SqlCommand command = new SqlCommand();
-            command.Connection = connection;
-            command.CommandText = "DELETE FROM staff WHERE id = @id";
-            command.Transaction = transaction;
-
-            command.Parameters.Add("@id", SqlDbType.Int);
-            command.Parameters["@id"].Value = id;
-
-            int result = command.ExecuteNonQuery();
-            transaction.Commit(); // Titik data dipulihkan ketika rollback dilaksanakan.
-
-            if (result > 0)
-            {
-                Console.WriteLine("Data deleted");
-            }
-            else
-            {
-                Console.WriteLine("Failed to delete data");
-            }
-
-            connection.Close();
+            Console.WriteLine("Data berhasil ditambah");
         }
-        catch (Exception e)
+        else
         {
-            Console.WriteLine(e.Message);
-            try
-            {
-                transaction.Rollback();
-            }
-            catch (Exception r)
-            {
-                Console.WriteLine(r.Message);
-            }
+            Console.WriteLine("Data gagal ditambahkan");
         }
+        Console.ReadKey();
     }
 
 }
